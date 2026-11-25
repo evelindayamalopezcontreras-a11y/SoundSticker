@@ -1,0 +1,7 @@
+
+{
+  "appId": "com.soundsticker.app",
+  "appName": "SoundSticker",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
