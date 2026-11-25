@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SoundSticker</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#100b19;color:white;
+ font-family:Arial,sans-serif;
+}
+header{
+ padding:22px;background:#1b1029;
+ border-bottom:1px solid #42235d;
+}
+header h1{margin:0;color:#bd83ff}
+header p{color:#aaa;margin-bottom:0}
+main{padding:18px;max-width:600px;margin:auto}
+.panel{
+ background:#21152f;padding:17px;
+ border:1px solid #49305d;
+ border-radius:17px;margin-bottom:17px;
+}
+h2{font-size:18px;margin-top:0}
+.chat{
+ height:310px;overflow:auto;
+ background:#140e1d;padding:12px;
+ border-radius:12px;margin-bottom:12px;
+}
+.msg{
+ padding:11px 14px;border-radius:13px;
+ margin:9px 0;max-width:85%;font-size:14px;
+}
+.bot{background:#38234d}
+.user{background:#713bc0;margin-left:auto}
+input[type=text]{
+ width:100%;padding:14px;border-radius:10px;
+ border:1px solid #68428b;background:#160f20;
+ color:white;outline:none;
+}
+button{
+ background:#914ce0;color:white;border:0;
+ border-radius:10px;padding:13px;
+ font-weight:bold;cursor:pointer;
+}
+.send{width:100%;margin-top:9px}
+.upload{
+ display:block;padding:20px;text-align:center;
+ border:2px dashed #8152a8;border-radius:13px;
+ cursor:pointer;color:#d7b5ff;
+}
+input[type=file]{display:none}
+#preview{width:100%;margin-top:12px;border-radius:12px}
+.small{color:#aaa;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>🎵 SoundSticker</h1>
+<p>Crea stickers con sonido</p>
+</header>
+<main>
+<section class="panel">
+<h2>🤖 Bot SoundSticker</h2>
+<div class="chat" id="chat">
+<div class="msg bot">¡Hola! Soy SoundSticker. Sube un vídeo y escribe /sticker para comenzar.</div>
+</div>
+<input id="command" type="text" placeholder="Escribe /sticker...">
+<button class="send" onclick="sendMessage()">Enviar mensaje</button>
+</section>
+
+<section class="panel">
+<h2>📁 Seleccionar vídeo</h2>
+<label class="upload">
+🎬 Toca aquí para subir tu vídeo
+<input type="file" id="video" accept="video/*">
+</label>
+<video id="preview" controls style="display:none"></video>
+<p class="small">Selecciona un vídeo de tu galería.</p>
+</section>
+</main>
+<script>
+const chat=document.getElementById('chat');
+const video=document.getElementById('video');
+const preview=document.getElementById('preview');
+let selected=false;
+
+function message(text,type){
+ const div=document.createElement('div');
+ div.className='msg '+type;
+ div.textContent=text;
+ chat.appendChild(div);
+ chat.scrollTop=chat.scrollHeight;
+}
+video.addEventListener('change',()=>{
+ if(video.files.length){
+ selected=true;
+ preview.src=URL.createObjectURL(video.files[0]);
+ preview.style.display='block';
+ message('Vídeo seleccionado correctamente.','bot');
+ }
+});
+function sendMessage(){
+ const input=document.getElementById('command');
+ const value=input.value.trim();
+ if(!value)return;
+ message(value,'user');
+ input.value='';
+ if(value.toLowerCase()==='/sticker'){
+  message(selected?
+  '¡Vídeo recibido! Próximamente podremos convertirlo en sticker con sonido.':
+  'Primero debes seleccionar un vídeo de tu galería.','bot');
+ }else{
+  message('Prueba el comando /sticker para comenzar.','bot');
+ }
+}
+</script>
+</body>
+</html>
